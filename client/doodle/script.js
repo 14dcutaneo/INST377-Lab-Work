@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let startPoint = 150
     let doodlerBottom = startPoint
     let platformCount = 5
+    let score = 0
 
     let isGameOver = false
     let isJumping = true
@@ -56,6 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 platform.bottom -= 4
                 let visual = platform.visual
                 visual.style.bottom = platform.bottom + 'px'
+
+                if (platform.bottom < 10) {
+                    let firstPlatform = platforms[0].visual
+                    firstPlatform.classList.remove('platform')
+                    platforms.shift()
+                    score++
+                    console.log(platforms)
+                    let newPlatform = new Platform(600)
+                    platforms.push(newPlatform)
+                }
             })
         }
     }
@@ -100,8 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function gameOver() {
         console.log('game over')
         isGameOver = true
+
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild)
+        }
+        grid.innerHTML = score
         clearInterval(upTimerID)
         clearInterval(downTimerID)
+        clearInterval(leftTimerID)
+        clearInterval(rightTimerID)    
     }
 
     function control(controller) {
