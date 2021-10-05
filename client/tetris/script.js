@@ -1,11 +1,13 @@
 /* eslint-disable */
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid')
-  const squares = Array.from(document.querySelectorAll('.grid div'))
-  const ScoreDisplay = document.querySelector('#score')
-  const StartBtn = document.querySelector('#start-button')
+  let squares = Array.from(document.querySelectorAll('.grid div'))
+  const scoreDisplay = document.querySelector('#score')
+  const startBtn = document.querySelector('#start-button')
   const width = 10
   let nextRandom = 0
+  let timerId
+  let score = 0
 
   const lTetromino = [
     [1, width + 1, width * 2 + 1, 2],
@@ -62,8 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  timerId = setInterval(moveDown, 1000)
-
   function control(e){
     if (e.keyCode === 37) {
       moveLeft()
@@ -94,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPosition = 4
       draw()
       displayShape()
+      addScore()
+      gameOver()
     }
   }
 
@@ -158,6 +160,45 @@ document.addEventListener('DOMContentLoaded', () => {
     upNextTetrominoes[nextRandom].forEach(index => {
       displaySquares[displayIndex + index].classList.add('tetromino')
     })
+  }
+
+  startBtn.addEventListener('click', () => {
+    if (timerId) {
+      clearInterval(timerId)
+      timerId = null
+
+    } else {
+      draw()
+      timerId = setInterval(moveDown, 1000)
+      nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+      displayShape()
+    }
+  })
+
+  function addScore() {
+    for (let count = 0; count < 199; count += width) {
+      const row = [count, count+1, count+2, count+3, count+4, count+5, count+6, count+7, count+8, count+9]
+
+      if (row.every(index => squares[index].classList.contains('taken'))) {
+        score += 10
+        scoreDisplay.innerHTML = score
+        row.forEach (index => {
+          squares[index].classList.remove('taken')
+          squares[index].classList.remove('tetromino')
+        })
+
+        const squaresRemoved = squares.splice(count, width)
+        squares = squaresRemoved.concat(squares)
+        squares.forEach(cell => grid.appendChild(cell))
+      }
+    }
+  }
+
+  function gameOver() {
+    if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+      scoreDisplay.innerHTML = 'GAME OVER'
+      clearInterval(timerId)
+    }
   }
 
   draw()
