@@ -31,15 +31,26 @@
 
         function displayMatches() {
             const matchArray = findMatches(this.value, cities);
-            console.log(matchArray);
+            const html = matchArray.map(place => {
+                return `
+                    <li>
+                        <span class = "name">${place.name}<br></span>
+                        <span class = "name">${place.category}<br></span>
+                        <span class = "name">${place.address_line_1}<br></span>
+                        <span class = "name">${place.city}<br></span>
+                        <span class = "name">${place.zip}<br></span>
+                    </li>
+                `;
+            }).join('');
+            suggestions.innerHTML = html;
             
         }
 
         const searchInput = document.querySelector('.search');
         const suggestions = document.querySelector('.suggestions');
         
-        searchInput.addEventListener('change', displayMatches)
-        searchInput.addEventListener('keyup', displayMatches)
+        searchInput.addEventListener('change', displayMatches);
+        searchInput.addEventListener('keyup', displayMatches);
 
     </script>
 
