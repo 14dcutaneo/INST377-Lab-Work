@@ -16,21 +16,21 @@
     <script>
         const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
 
-        const cities = [];
+        const resultData = [];
 
         fetch(endpoint)
         .then((blob) => blob.json())
-        .then((data) => cities.push(...data));
+        .then((data) => resultData.push(...data));
 
-        function findMatches (wordToMatch, cities) {
-        return cities.filter((place) => {
+        function findMatches (wordToMatch, resultData) {
+        return resultData.filter((place) => {
             const regex = new RegExp(wordToMatch, 'gi');
             return place.name.match(regex) || place.zip.match(regex);
         });
         }
 
         function displayMatches() {
-            const matchArray = findMatches(this.value, cities);
+            const matchArray = findMatches(this.value, resultData);
             const html = matchArray.map(place => {
                 return `
                     <li>
