@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab 6</title>
+    <link rel='stylesheet' href='styles.css'/>
+  </head>
+  <body>
+    <script>
+        const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
+
+        const cities = [];
+
+        fetch (endpoint)
+        .then(blob => blob.json())
+        .then(data => cities.push(...data))
+
+        function findMatches (wordToMatch, cities) {
+            return cities.filter(place => {
+                const regex = new RegExp(wordToMatch, 'gi');
+                return place.name.match(regex) || place.zip.match(regex)
+            });
+        }
+
+
+    </script>
+  </body>
+</html>
