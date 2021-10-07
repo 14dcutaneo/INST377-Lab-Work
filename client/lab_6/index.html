@@ -7,23 +7,41 @@
     <link rel='stylesheet' href='styles.css'/>
   </head>
   <body>
+      
+    <h1>Daniel Cutaneo Lab 6: Typehead Entries</h1>
+
+    <input type="text" class = "search" id="myInput" placeholder="Search..">
+    <ul class = "suggestions"></ul>
+    
     <script>
         const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
 
         const cities = [];
 
-        fetch (endpoint)
-        .then(blob => blob.json())
-        .then(data => cities.push(...data))
+        fetch(endpoint)
+        .then((blob) => blob.json())
+        .then((data) => cities.push(...data));
 
         function findMatches (wordToMatch, cities) {
-            return cities.filter(place => {
-                const regex = new RegExp(wordToMatch, 'gi');
-                return place.name.match(regex) || place.zip.match(regex)
-            });
+        return cities.filter((place) => {
+            const regex = new RegExp(wordToMatch, 'gi');
+            return place.name.match(regex) || place.zip.match(regex);
+        });
         }
 
+        function displayMatches() {
+            const matchArray = findMatches(this.value, cities);
+            console.log(matchArray);
+            
+        }
+
+        const searchInput = document.querySelector('.search');
+        const suggestions = document.querySelector('.suggestions');
+        
+        searchInput.addEventListener('change', displayMatches)
+        searchInput.addEventListener('keyup', displayMatches)
 
     </script>
+
   </body>
 </html>
