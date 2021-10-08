@@ -14,43 +14,50 @@
     <ul class = "suggestions"></ul>
     
     <script>
-        const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
 
-        const resultData = [];
-
-        fetch(endpoint)
-        .then((blob) => blob.json())
-        .then((data) => resultData.push(...data));
-
-        function findMatches (wordToMatch, resultData) {
-        return resultData.filter((place) => {
-            const regex = new RegExp(wordToMatch, 'gi');
-            return place.name.match(regex) || place.zip.match(regex);
-        });
-        }
-
-        function displayMatches() {
-            const matchArray = findMatches(this.value, resultData);
-            const html = matchArray.map(place => {
-                return `
-                    <li>
-                        <span class = "name">${place.name}<br></span>
-                        <span class = "name">${place.category}<br></span>
-                        <span class = "name">${place.address_line_1}<br></span>
-                        <span class = "name">${place.city}<br></span>
-                        <span class = "name">${place.zip}<br></span>
-                    </li>
-                `;
-            }).join('');
-            suggestions.innerHTML = html;
+        async function windowActions() {
             
+            const request = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
+            const resultData = await request.json();
+
+            function findMatches (wordToMatch, resultData) {
+                const regex = new RegExp(wordToMatch, 'gi');
+                return place.name.match(regex) || place.zip.match(regex);
+                });
+            }
+
+            function displayMatches(event) {
+                const matchArray = findMatches(event.target.value, resultData);
+                const html = matchArray.map(place => {
+                    if (!event.target.value) {
+                        document.querySelector('.suggestions').innerHTML = "";      
+                    } else {
+                        return `
+                        <li>
+                            <span class = "name">${place.name}<br></span>
+                            <span class = "name">${place.category}<br></span>
+                            <span class = "name">${place.address_line_1}<br></span>
+                            <span class = "name">${place.city}<br></span>
+                            <span class = "name">${place.zip}<br></span>
+                        </li>
+                        `;
+                    } 
+                    
+                }).join('');
+                suggestions.innerHTML = html;
+                
+            }
+
+            const searchInput = document.querySelector('.search');
+            const suggestions = document.querySelector('.suggestions');
+            
+            searchInput.addEventListener('change', (evt) => { displayMatches(evt) });
+            searchInput.addEventListener('keyup',  (evt) => { displayMatches(evt) });
+            
+
         }
 
-        const searchInput = document.querySelector('.search');
-        const suggestions = document.querySelector('.suggestions');
-        
-        searchInput.addEventListener('change', displayMatches);
-        searchInput.addEventListener('keyup', displayMatches);
+        window.onload = windowActions;
 
     </script>
 
