@@ -21,6 +21,7 @@
             const resultData = await request.json();
 
             function findMatches (wordToMatch, resultData) {
+                return resultData.filter((place) => {
                 const regex = new RegExp(wordToMatch, 'gi');
                 return place.name.match(regex) || place.zip.match(regex);
                 });
