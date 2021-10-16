@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Daniel Cutaneo Lab 7: JSON to Map Markers</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
@@ -18,15 +20,37 @@
 
   </head>
   <body>
-      
+
     <h1>Daniel Cutaneo Lab 7: JSON to Map Markers</h1>
-    <h3>Zip Code Food Search</h3>
-    <p>Search</p>
+    <h2>Zip Code Food Search</h2>
 
-    <input type="text" class = "search" id="myInput" placeholder="Search..">
-    <ul class = "suggestions"></ul>
+    <div class="wrapper">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-half">
+                    <form action = "/api">
+                        <div class = "field">
+                            <label class="label"> Search</label>
+                            <div class="control">
+                                <input type="text" class = "search" id="myInput" placeholder="Search..">
+                                <div class="box has-background-success">
+                                    <ul class = "suggestions"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-    <div id="mapid"></div>
+                <div class="columns is-one-half"> 
+                    <div class = "column is-one-half">
+                        <div id="mapid"></div>
+                    </div> 
+                </div>
+
+            </div>
+                
+        </div>
+    </div>
 
     <script src = 'script.js'></script>
 
