@@ -3,65 +3,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lab 7</title>
+    <title>Daniel Cutaneo Lab 7: JSON to Map Markers</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
     <link rel='stylesheet' href='styles.css'/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin="">
+    </script>
+
   </head>
   <body>
       
     <h1>Daniel Cutaneo Lab 7: JSON to Map Markers</h1>
+    <h3>Zip Code Food Search</h3>
+    <p>Search</p>
 
     <input type="text" class = "search" id="myInput" placeholder="Search..">
     <ul class = "suggestions"></ul>
-    
-    <script>
 
-        async function windowActions() {
-            
-            const request = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
-            const resultData = await request.json();
+    <div id="mapid"></div>
 
-            function findMatches (wordToMatch, resultData) {
-                return resultData.filter((place) => {
-                    const regex = new RegExp(wordToMatch, 'gi');
-                    return place.name.match(regex) || place.zip.match(regex);
-                });
-            }
-
-            function displayMatches(event) {
-                const matchArray = findMatches(event.target.value, resultData);
-                const html = matchArray.map(place => {
-                    if (!event.target.value) {
-                        document.querySelector('.suggestions').innerHTML = "";      
-                    } else {
-                        return `
-                        <li>
-                            list-style: none
-                            <span class = "name">${place.name}<br></span>
-                            <span class = "name">${place.category}<br></span>
-                            <span class = "name">${place.address_line_1}<br></span>
-                            <span class = "name">${place.city}<br></span>
-                            <span class = "name">${place.zip}<br></span>
-                        </li>
-                        `;
-                    } 
-                    
-                }).join('');
-                suggestions.innerHTML = html;
-                
-            }
-
-            const searchInput = document.querySelector('.search');
-            const suggestions = document.querySelector('.suggestions');
-            
-            searchInput.addEventListener('change', (evt) => { displayMatches(evt) });
-            searchInput.addEventListener('keyup',  (evt) => { displayMatches(evt) });
-            
-
-        }
-
-        window.onload = windowActions;
-
-    </script>
+    <script src = 'script.js'></script>
 
   </body>
 </html>
