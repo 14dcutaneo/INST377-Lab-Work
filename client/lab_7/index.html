@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab 7</title>
+    <link rel='stylesheet' href='styles.css'/>
+  </head>
+  <body>
+      
+    <h1>Daniel Cutaneo Lab 7: JSON to Map Markers</h1>
+
+    <input type="text" class = "search" id="myInput" placeholder="Search..">
+    <ul class = "suggestions"></ul>
+    
+    <script>
+
+        async function windowActions() {
+            
+            const request = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
+            const resultData = await request.json();
+
+            function findMatches (wordToMatch, resultData) {
+                return resultData.filter((place) => {
+                    const regex = new RegExp(wordToMatch, 'gi');
+                    return place.name.match(regex) || place.zip.match(regex);
+                });
+            }
+
+            function displayMatches(event) {
+                const matchArray = findMatches(event.target.value, resultData);
+                const html = matchArray.map(place => {
+                    if (!event.target.value) {
+                        document.querySelector('.suggestions').innerHTML = "";      
+                    } else {
+                        return `
+                        <li>
+                            list-style: none
+                            <span class = "name">${place.name}<br></span>
+                            <span class = "name">${place.category}<br></span>
+                            <span class = "name">${place.address_line_1}<br></span>
+                            <span class = "name">${place.city}<br></span>
+                            <span class = "name">${place.zip}<br></span>
+                        </li>
+                        `;
+                    } 
+                    
+                }).join('');
+                suggestions.innerHTML = html;
+                
+            }
+
+            const searchInput = document.querySelector('.search');
+            const suggestions = document.querySelector('.suggestions');
+            
+            searchInput.addEventListener('change', (evt) => { displayMatches(evt) });
+            searchInput.addEventListener('keyup',  (evt) => { displayMatches(evt) });
+            
+
+        }
+
+        window.onload = windowActions;
+
+    </script>
+
+  </body>
+</html>
