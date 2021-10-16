@@ -41,3 +41,10 @@ li {
     height: 350px; 
     width: 350px;
 }
+
+h1 {
+    font-size: x-large;
+    color: black;
+    font-weight: bold;
+}
+
